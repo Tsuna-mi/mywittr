@@ -19,7 +19,7 @@ self.addEventListener('install', function(event) {
 self.addEventListener('activate', function(event) {
   console.log('sw activated');
   event.waitUntil(
-
+      //easy solution: caches.delete('wittr-static-v1');
       caches.keys().then(function(cacheNames) {
         console.log(cacheNames);
         return Promise.all(
