@@ -1,7 +1,11 @@
+import { Promise } from 'es6-promise';
 var staticCacheName = 'wittr-static-v2';
-
+//probando notificación 2
 self.addEventListener('install', function(event) {
   event.waitUntil(
+    // TODO: change the site's theme, eg swap the vars in public/scss/_theme.scss
+    // Ensure at least $primary-color changes
+    // TODO: change cache name to 'wittr-static-v2'
     caches.open(staticCacheName).then(function(cache) {
       return cache.addAll([
         '/',
@@ -16,19 +20,28 @@ self.addEventListener('install', function(event) {
 });
 
 self.addEventListener('activate', function(event) {
+  console.log('sw activated');
   event.waitUntil(
-    caches.keys().then(function(cacheNames) {
-      return Promise.all(
-        cacheNames.filter(function(cacheName) {
-          return cacheName.startsWith('wittr-') &&
-                 cacheName != staticCacheName;
-        }).map(function(cacheName) {
-          return caches.delete(cacheName);
-        })
-      );
-    })
-  );
-});
+      //get all the caches exists
+      caches.keys().then(function(cacheNames) {
+        console.log(cacheNames);
+        //filtramos y nos quedamos solo con las que empiezar por wittr- 
+        //para evitar borrar otras caches del mismo origen (por si hay más de 1sw)
+        //y son distintas de la actual
+        //las ponemos en un array y las borramos.
+        //wrapeamos todas las promesas en un promise.all para esperar a que se
+        //completen todas
+        return Promise.all(
+          cacheNames.filter(function(cacheName){
+            return cacheName.startsWith('wittr-') &&
+            cacheName != staticCacheName;
+          }).map(function(cacheName){
+            return cache.delete(cacheName);
+          })
+        );
+      })
+    );
+  });
 
 self.addEventListener('fetch', function(event) {
   event.respondWith(
