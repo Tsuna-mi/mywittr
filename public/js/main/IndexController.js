@@ -56,7 +56,7 @@ IndexController.prototype._updateReady = function(worker) {
 
   toast.answer.then(function(answer) {
     if (answer != 'refresh') return;
-    // TODO: tell the service worker to skipWaiting
+    worker.postMessage({action: 'skipWaiting'})
   });
 };
 
