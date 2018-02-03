@@ -38,6 +38,10 @@ IndexController.prototype._registerServiceWorker = function() {
 
   // TODO: listen for the controlling service worker changing
   // and reload the page
+  navigator.serviceWorker.addEventListener('controllerchange', function(){
+    window.locatioon.reload();
+  })
+
 };
 
 IndexController.prototype._trackInstalling = function(worker) {
