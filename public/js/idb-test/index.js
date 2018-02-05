@@ -1,6 +1,6 @@
 import idb from 'idb';
 
-var dbPromise = idb.open('test-db', 4, function(upgradeDb) {
+var dbPromise = idb.open('test-db', 5, function(upgradeDb) {
   switch(upgradeDb.oldVersion) {
     case 0:
       var keyValStore = upgradeDb.createObjectStore('keyval');
